@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  elephant:
+    image: elephant
+    container_name: elephant
+    restart: always
+    volumes:
+      - type: volume
+        source: bluto
+        target: /root/bluto
+        volume:
+          nocopy: true
+      - type: volume
+        source: ynet
+        target: /root/ynet
+        volume:
+          nocopy: true
+      - type: volume
+        source: m2
+        target: /root/.m2
+        volume:
+          nocopy: true
+      - type: volume
+        source: vscode-server-insiders
+        target: /root/.vscode-server-insiders
+        volume:
+          nocopy: true
+    tty: true
+    network_mode: host
+
+volumes: 
+  bluto:
+  ynet:
+  m2:
+  vscode-server-insiders:
+
