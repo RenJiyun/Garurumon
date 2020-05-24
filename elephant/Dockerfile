@@ -6,6 +6,7 @@ RUN apt-get install -y telnet
 RUN apt-get install -y openssh-server
 RUN apt-get install -y inetutils-ping
 RUN apt-get install -y git
+RUN apt-get install -y ruby-full build-essential zlib1g-dev
 
 ADD jdk-8u251-linux-x64.tar.gz /opt
 ADD apache-maven-3.6.3-bin.tar.gz /opt
@@ -27,10 +28,17 @@ RUN git config --global --add core.filemode false
 
 
 # 配置环境变量
+ENV LANG=C.UTF-8
 ENV JAVA_HOME=/opt/jdk1.8.0_251
 ENV MAVEN_HOME=/opt/apache-maven-3.6.3
 ENV NODE_HOME=/opt/node-v12.16.3-linux-x64
-ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin
+ENV GEM_HOME=/opt/gems
+ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME}/bin
+
+
+# 安装需要的gem
+RUN gem install jekyll 
+RUN gem install bundler
 
 
 # 入口
