@@ -41,6 +41,13 @@ RUN gem install jekyll
 RUN gem install bundler
 
 
+# 安装和配置python3.7环境
+RUN wget -v https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh -O /tmp/conda.sh
+RUN /bin/bash /tmp/conda.sh -b -p /opt/anaconda3
+RUN /opt/anaconda3/bin/conda init bash
+RUN rm -f /tmp/conda.sh
+
+
 # 入口
 ENTRYPOINT cat /tmp/hosts >> /etc/hosts; rm -rf /tmp/*; service ssh start; /bin/bash
 
