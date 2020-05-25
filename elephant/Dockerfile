@@ -56,6 +56,11 @@ RUN echo "export NODE_HOME=/opt/node-v12.16.3-linux-x64" >> /root/.bashrc
 RUN echo "export GEM_HOME=/opt/gems" >> /root/.bashrc
 RUN echo 'export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_HOME/bin' >> /root/.bashrc
 
+# 设置命令别名
+RUN echo "alias install='mvn clean install -Dmaven.test.skip=true'" >> /root/.bashrc
+
+RUN apt-get install -y net-tools
+
 
 # 入口
 ENTRYPOINT cat /tmp/hosts >> /etc/hosts; rm -rf /tmp/*; service ssh start; /bin/bash
