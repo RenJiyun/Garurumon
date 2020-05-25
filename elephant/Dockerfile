@@ -27,14 +27,6 @@ RUN git config --global --add core.filemode false
 
 
 
-# 配置环境变量
-ENV LANG=C.UTF-8
-ENV JAVA_HOME=/opt/jdk1.8.0_251
-ENV MAVEN_HOME=/opt/apache-maven-3.6.3
-ENV NODE_HOME=/opt/node-v12.16.3-linux-x64
-ENV GEM_HOME=/opt/gems
-ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME}/bin
-
 
 # 安装需要的gem
 RUN gem install jekyll 
@@ -46,6 +38,23 @@ RUN wget -v https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh 
 RUN /bin/bash /tmp/conda.sh -b -p /opt/anaconda3
 RUN /opt/anaconda3/bin/conda init bash
 RUN rm -f /tmp/conda.sh
+
+
+# 配置环境变量
+# ENV LANG=C.UTF-8
+# ENV JAVA_HOME=/opt/jdk1.8.0_251
+# ENV MAVEN_HOME=/opt/apache-maven-3.6.3
+# ENV NODE_HOME=/opt/node-v12.16.3-linux-x64
+# ENV GEM_HOME=/opt/gems
+# ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:${GEM_HOME}/bin
+
+
+RUN echo "export LANG=C.UTF-8" >> /root/.bashrc
+RUN echo "export JAVA_HOME=/opt/jdk1.8.0_251" >> /root/.bashrc
+RUN echo "export MAVEN_HOME=/opt/apache-maven-3.6.3" >> /root/.bashrc
+RUN echo "export NODE_HOME=/opt/node-v12.16.3-linux-x64" >> /root/.bashrc
+RUN echo "export GEM_HOME=/opt/gems" >> /root/.bashrc
+RUN echo 'export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_HOME/bin' >> /root/.bashrc
 
 
 # 入口
