@@ -1,5 +1,6 @@
 FROM ubuntu
 
+# 安装软件
 RUN apt-get update 
 RUN apt-get install -y vim
 RUN apt-get install -y telnet
@@ -7,6 +8,18 @@ RUN apt-get install -y openssh-server
 RUN apt-get install -y inetutils-ping
 RUN apt-get install -y git
 RUN apt-get install -y ruby-full build-essential zlib1g-dev
+RUN apt-get install -y net-tools
+
+# 安装需要的gem
+RUN gem install jekyll 
+RUN gem install bundler
+
+# 安装和配置python3.7环境
+RUN wget -v https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh -O /tmp/conda.sh
+RUN /bin/bash /tmp/conda.sh -b -p /opt/anaconda3
+RUN /opt/anaconda3/bin/conda init bash
+RUN rm -f /tmp/conda.sh
+
 
 ADD jdk-8u251-linux-x64.tar.gz /opt
 ADD apache-maven-3.6.3-bin.tar.gz /opt
@@ -25,30 +38,7 @@ RUN git config --global user.email "wozaijixu@msn.cn"
 RUN git config --global credential.helper store
 RUN git config --global --add core.filemode false
 
-
-
-
-# 安装需要的gem
-RUN gem install jekyll 
-RUN gem install bundler
-
-
-# 安装和配置python3.7环境
-RUN wget -v https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh -O /tmp/conda.sh
-RUN /bin/bash /tmp/conda.sh -b -p /opt/anaconda3
-RUN /opt/anaconda3/bin/conda init bash
-RUN rm -f /tmp/conda.sh
-
-
 # 配置环境变量
-# ENV LANG=C.UTF-8
-# ENV JAVA_HOME=/opt/jdk1.8.0_251
-# ENV MAVEN_HOME=/opt/apache-maven-3.6.3
-# ENV NODE_HOME=/opt/node-v12.16.3-linux-x64
-# ENV GEM_HOME=/opt/gems
-# ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:${GEM_HOME}/bin
-
-
 RUN echo "export LANG=C.UTF-8" >> /root/.bashrc
 RUN echo "export JAVA_HOME=/opt/jdk1.8.0_251" >> /root/.bashrc
 RUN echo "export MAVEN_HOME=/opt/apache-maven-3.6.3" >> /root/.bashrc
@@ -58,9 +48,6 @@ RUN echo 'export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_H
 
 # 设置命令别名
 RUN echo "alias install='mvn clean install -Dmaven.test.skip=true'" >> /root/.bashrc
-
-RUN apt-get install -y net-tools
-
 
 # 入口
 ENTRYPOINT cat /tmp/hosts >> /etc/hosts; rm -rf /tmp/*; service ssh start; /bin/bash
