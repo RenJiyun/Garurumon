@@ -46,6 +46,14 @@ RUN echo "export NODE_HOME=/opt/node-v12.16.3-linux-x64" >> /root/.bashrc
 RUN echo "export GEM_HOME=/opt/gems" >> /root/.bashrc
 RUN echo 'export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_HOME/bin' >> /root/.bashrc
 
+ENV LANG=C.UTF-8
+ENV JAVA_HOME=/opt/jdk1.8.0_251
+ENV MAVEN_HOME=/opt/apache-maven-3.6.3
+ENV NODE_HOME=/opt/node-v12.16.3-linux-x64
+ENV GEM_HOME=/opt/gems
+ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME}/bin
+
+
 # 设置命令别名
 RUN echo "alias install='mvn clean install -Dmaven.test.skip=true'" >> /root/.bashrc
 
