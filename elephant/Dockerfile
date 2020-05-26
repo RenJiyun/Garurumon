@@ -25,8 +25,7 @@ ADD jdk-8u251-linux-x64.tar.gz /opt
 ADD apache-maven-3.6.3-bin.tar.gz /opt
 ADD node-v12.16.3-linux-x64.tar.xz /opt
 
-
-COPY hosts /tmp/hosts
+ 
 
 # 更改ssh端口并设置允许root登录
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
@@ -58,7 +57,7 @@ ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME
 RUN echo "alias install='mvn clean install -Dmaven.test.skip=true'" >> /root/.bashrc
 
 # 入口
-ENTRYPOINT cat /tmp/hosts >> /etc/hosts; rm -rf /tmp/*; service ssh start; /bin/bash
+ENTRYPOINT rm -rf /tmp/*; service ssh start; /bin/bash
 
 
 # 容器启动后
