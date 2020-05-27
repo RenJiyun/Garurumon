@@ -30,6 +30,11 @@ services:
         target: /root/.vscode-server-insiders
         volume:
           nocopy: true
+      - type: volume
+        source: gems
+        target: /opt/gems
+        volume:
+          nocopy: true
     tty: true
     network_mode: host
 
@@ -39,4 +44,5 @@ volumes:
   m2:
   vscode-server:
   vscode-server-insiders:
+  gems:
 
