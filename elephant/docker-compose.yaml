@@ -25,6 +25,11 @@ services:
         target: /root/.vscode-server
         volume:
           nocopy: true
+      - type: volume
+        source: vscode-server-insiders
+        target: /root/.vscode-server-insiders
+        volume:
+          nocopy: true
     tty: true
     network_mode: host
 
@@ -33,4 +38,5 @@ volumes:
   ynet:
   m2:
   vscode-server:
+  vscode-server-insiders:
 
