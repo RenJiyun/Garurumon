@@ -45,6 +45,7 @@ RUN echo "export NODE_HOME=/opt/node-v12.16.3-linux-x64" >> /root/.bashrc
 RUN echo "export GEM_HOME=/opt/gems" >> /root/.bashrc
 RUN echo 'export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_HOME/bin' >> /root/.bashrc
 
+# 之所以配置跟上面一样的环境变量是有原因的，不要乱改
 ENV LANG=C.UTF-8
 ENV JAVA_HOME=/opt/jdk1.8.0_251
 ENV MAVEN_HOME=/opt/apache-maven-3.6.3

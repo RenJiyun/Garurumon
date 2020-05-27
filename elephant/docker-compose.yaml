@@ -21,8 +21,8 @@ services:
         volume:
           nocopy: true
       - type: volume
-        source: vscode-server-insiders
-        target: /root/.vscode-server-insiders
+        source: vscode-server
+        target: /root/.vscode-server
         volume:
           nocopy: true
     tty: true
@@ -32,5 +32,5 @@ volumes:
   bluto:
   ynet:
   m2:
-  vscode-server-insiders:
+  vscode-server:
 
