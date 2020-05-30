@@ -69,7 +69,7 @@ ENV PATH=${PATH}:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME}/bin
 
 # 配置命令别名
 RUN echo "alias install='mvn clean install -Dmaven.test.skip=true'" >> /root/.bashrc
-RUN echo "alias frpc=/opt/frp_0.33.0_linux_amd64/frpc -c /opt/frp_0.33.0_linux_amd64/frpc.ini"
+RUN echo "alias frpc=/opt/frp_0.33.0_linux_amd64/frpc -c /opt/frp_0.33.0_linux_amd64/frpc.ini" >> /root/.bashrc
 
 
 # 清除安装包

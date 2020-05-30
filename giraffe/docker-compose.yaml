@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   giraffe:
-    image: giraffe
+    image: eggip/giraffe
     container_name: giraffe
     restart: always
     network_mode: host

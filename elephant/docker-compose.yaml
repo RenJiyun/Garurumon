@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   elephant:
-    image: elephant
+    image: eggip/elephant
     container_name: elephant
     restart: always
     volumes:
