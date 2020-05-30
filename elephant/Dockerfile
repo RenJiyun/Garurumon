@@ -21,11 +21,24 @@ RUN /opt/anaconda3/bin/conda init bash
 RUN rm -f /tmp/conda.sh
 
 
-ADD jdk-8u251-linux-x64.tar.gz /opt
-ADD apache-maven-3.6.3-bin.tar.gz /opt
-ADD node-v12.16.3-linux-x64.tar.xz /opt
+# 安装java环境
+RUN apt-get -y install openjdk-8-jdk
 
- 
+
+# 下载链接可能需要更改
+WORKDIR /tmp
+RUN wget -v https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -O apache-maven-3.6.3-bin.tar.gz
+RUN wget -v https://npm.taobao.org/mirrors/node/v14.3.0/node-v14.3.0-linux-x64.tar.xz -O node-v14.3.0-linux-x64.tar.xz
+RUN wget -v https://github.com/fatedier/frp/releases/download/v0.33.0/frp_0.33.0_linux_amd64.tar.gz -O frp_0.33.0_linux_amd64.tar.gz
+
+RUN tar -xzvf apache-maven-3.6.3-bin.tar.gz
+RUN tar -xvJf node-v14.3.0-linux-x64.tar.xz
+RUN tar -xzvf frp_0.33.0_linux_amd64.tar.gz
+
+RUN mv apache-maven-3.6.3 /opt/
+RUN mv node-v14.3.0-linux-x64 /opt/
+RUN mv frp_0.33.0_linux_amd64 /opt/
+
 
 # 更改ssh端口并设置允许root登录
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
@@ -39,27 +52,37 @@ RUN git config --global --add core.filemode false
 
 # 配置环境变量
 RUN echo "export LANG=C.UTF-8" >> /root/.bashrc
-RUN echo "export JAVA_HOME=/opt/jdk1.8.0_251" >> /root/.bashrc
 RUN echo "export MAVEN_HOME=/opt/apache-maven-3.6.3" >> /root/.bashrc
-RUN echo "export NODE_HOME=/opt/node-v12.16.3-linux-x64" >> /root/.bashrc
+RUN echo "export NODE_HOME=/opt/node-v14.3.0-linux-x64" >> /root/.bashrc
 RUN echo "export GEM_HOME=/opt/gems" >> /root/.bashrc
-RUN echo 'export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_HOME/bin' >> /root/.bashrc
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /root/.bashrc
+RUN echo 'export PATH=$PATH:$MAVEN_HOME/bin:$NODE_HOME/bin:$GEM_HOME/bin' >> /root/.bashrc
 
 # 之所以配置跟上面一样的环境变量是有原因的，不要乱改
 ENV LANG=C.UTF-8
-ENV JAVA_HOME=/opt/jdk1.8.0_251
 ENV MAVEN_HOME=/opt/apache-maven-3.6.3
 ENV NODE_HOME=/opt/node-v12.16.3-linux-x64
 ENV GEM_HOME=/opt/gems
-ENV PATH=${PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME}/bin
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH=${PATH}:${MAVEN_HOME}/bin:${NODE_HOME}/bin:/${GEM_HOME}/bin
 
 
-# 设置命令别名
+# 配置命令别名
 RUN echo "alias install='mvn clean install -Dmaven.test.skip=true'" >> /root/.bashrc
+RUN echo "alias frpc=/opt/frp_0.33.0_linux_amd64/frpc -c /opt/frp_0.33.0_linux_amd64/frpc.ini"
+
+
+# 清除安装包
+RUN rm -rf /tmp/*
+
+WORKDIR /root
+
+# 风筝,代表连接
+RUN mkdir kite
+RUN ln -s /opt/frp_0.33.0_linux_amd64/frpc.ini /root/kite/frpc.ini
 
 # 入口
-ENTRYPOINT rm -rf /tmp/*; service ssh start; /bin/bash
-
+ENTRYPOINT service ssh start; /bin/bash
 
 # 容器启动后
 # 1. 设置root密码

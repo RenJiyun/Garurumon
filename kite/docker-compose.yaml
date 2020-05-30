@@ -1,9 +1,0 @@
-version: '3.8'
-services:
-  kite:
-    image: kite
-    container_name: kite
-    restart: always
-    tty: true
-    network_mode: host
-
