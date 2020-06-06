@@ -81,6 +81,11 @@ WORKDIR /root
 RUN mkdir kite
 RUN ln -s /opt/frp_0.33.0_linux_amd64/frpc.ini /root/kite/frpc.ini
 
+
+# ynet工作相关
+RUN echo "http://renjiyun:yunjiren123@git.ynet.io" >> .git-credentials 
+
+
 # 入口
 ENTRYPOINT service ssh start; /bin/bash
 

@@ -35,6 +35,11 @@ services:
         target: /opt/gems
         volume:
           nocopy: true
+      - type: volume
+        source: ssh
+        target: /root/.ssh
+        volume:
+          nocopy: true
     tty: true
     network_mode: host
 
@@ -45,4 +50,5 @@ volumes:
   vscode-server:
   vscode-server-insiders:
   gems:
+  ssh:
 
