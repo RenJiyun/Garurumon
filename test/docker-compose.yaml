@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  elephant:
+    image: ubuntu
+    container_name: ubuntu
+    stdin_open: true
+    tty: true
+    command: 
+
